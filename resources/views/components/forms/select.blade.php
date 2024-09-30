@@ -4,7 +4,7 @@
     $defaults = [
         'id' => $name,
         'name' => $name,
-        'class' => 'rounded-xl bg-white/10 border border-white/10 px-5 py-4 w-full'
+        'class' => 'rounded-xl bg-[#151515] rounded-xl border border-white/10 px-5 py-4 w-full',
     ];
 @endphp
 
@@ -13,4 +13,3 @@
         {{ $slot }}
     </select>
 </x-forms.field>
-

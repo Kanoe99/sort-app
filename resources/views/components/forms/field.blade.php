@@ -5,7 +5,7 @@
         <x-forms.label :$name :$label />
     @endif
 
-    <div class="mt-1">
+    <div>
         {{ $slot }}
 
         <x-forms.error :error="$errors->first($name)" />

@@ -11,9 +11,10 @@ class SearchController extends Controller
     {
         $jobs = Job::query()
             ->with(['employer', 'tags'])
-            ->where('title', 'LIKE', '%'.request('q').'%')
+            ->whereRaw("LOWER(title) LIKE ?", '%' . strtolower(request('q')) . '%')
             ->get();
 
         return view('results', ['jobs' => $jobs]);
     }
+
 }
