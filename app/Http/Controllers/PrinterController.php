@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job;
+use App\Models\Printer;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class JobController extends Controller
+class PrinterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $printers = Job::latest()->with(['employer', 'tags'])->get()->groupBy('featured');
+        $printers = Printer::latest()->with(['tags'])->get()->groupBy('attention');
+
         return view('jobs.index', [
-            'jobs' => $printers[0],
+            'printers' => $printers[0],
             'featuredJobs' => $printers[1],
             'tags' => Tag::all(),
         ]);

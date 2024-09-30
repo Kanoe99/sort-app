@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        assets: 'resources/images', // Add this line
+    },
 });

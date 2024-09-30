@@ -4,7 +4,7 @@
             <h1 class="font-bold text-4xl">Выберите Параметры Поиска</h1>
 
             <x-forms.form action="/search" class="mt-6 flex justify-center items-center gap-5">
-                <x-forms.input :label="false" name="q2" placeholder="Web Developer..." />
+                <x-forms.input :label="false" name="q2" placeholder="Что ищите?" />
                 <x-forms.select label="" name="schedule">
                     @php
                         $prikols = [1, 2, 3, 4, 5, 6, 7];
@@ -29,14 +29,14 @@
             <x-section-heading>Требуют Внимания</x-section-heading>
 
             <div class="grid lg:grid-cols-3 gap-8 mt-6">
-                @foreach ($featuredJobs as $job)
-                    <x-job-card :$job />
+                @foreach ($printers as $printer)
+                    <x-job-card :$printer />
                 @endforeach
             </div>
         </section>
 
         <section>
-            <x-section-heading>Tags</x-section-heading>
+            <x-section-heading>Теги</x-section-heading>
 
             <div class="mt-6 space-x-1">
                 @foreach ($tags as $tag)
@@ -46,11 +46,11 @@
         </section>
 
         <section>
-            <x-section-heading>Recent Jobs</x-section-heading>
+            <x-section-heading>Последние добавленные</x-section-heading>
 
             <div class="mt-6 space-y-6">
-                @foreach ($jobs as $job)
-                    <x-job-card-wide :$job />
+                @foreach ($printers as $printer)
+                    <x-job-card-wide :$printer />
                 @endforeach
             </div>
         </section>

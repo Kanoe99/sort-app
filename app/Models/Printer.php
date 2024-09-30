@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Job extends Model
+class Printer extends Model
 {
     use HasFactory;
 
@@ -23,8 +23,4 @@ class Job extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function employer(): BelongsTo
-    {
-        return $this->belongsTo(Employer::class);
-    }
 }
