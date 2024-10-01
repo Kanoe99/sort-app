@@ -1,7 +1,5 @@
-@props(['printer'])
-
-<x-panel class="flex flex-col text-center">
-    <a href="/printers/{{ $printer->id }}">
+<x-layout>
+    <x-panel class="flex flex-col text-center">
         <div class="self-start text-sm">{{ $printer->model }}</div>
 
         <div class="py-8">
@@ -19,10 +17,11 @@
             <div>
                 @if (isset($printer->tags))
                     @foreach ($printer->tags as $tag)
-                        <x-tag :$tag size="small" />
+                        <x-tag :$tag />
                     @endforeach
                 @endif
             </div>
+            <x-forms.button>Редактировать</x-forms.button>
         </div>
-    </a>
-</x-panel>
+    </x-panel>
+</x-layout>

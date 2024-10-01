@@ -7,7 +7,6 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class PrinterController extends Controller
 {
@@ -32,6 +31,12 @@ class PrinterController extends Controller
     public function create()
     {
         return view('printers.create');
+    }
+    public function show(Printer $printer)
+    {
+        return view('printers.show', [
+            'printer' => $printer
+        ]);
     }
 
     /**
