@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Printer;
 
 class User extends Authenticatable
 {
@@ -45,8 +47,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function employer()
+    public function printers(): BelongsToMany
     {
-        return $this->hasOne(Employer::class);
+        return $this->belongsToMany(Printer::class);
     }
 }

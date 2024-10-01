@@ -8,14 +8,20 @@
             <a href="#" target="_blank">
                 {{ $printer->model }}
             </a>
+            <p class="mt-6 border-2 py-2">
+                comment =
+                {{ $printer->comment }}
+            </p>
         </h3>
     </div>
 
     <div class="flex justify-between items-center mt-auto">
         <div>
-            @foreach ($printer->tags as $tag)
-                <x-tag :$tag size="small" />
-            @endforeach
+            @if (isset($printer->tags))
+                @foreach ($printer->tags as $tag)
+                    <x-tag :$tag size="small" />
+                @endforeach
+            @endif
         </div>
     </div>
 </x-panel>

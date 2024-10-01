@@ -10,8 +10,8 @@ class Tag extends Model
 {
     use HasFactory;
 
-    public function jobs(): BelongsToMany
+    public function printers(): BelongsToMany
     {
-        return $this->belongsToMany(Job::class);
+        return $this->belongsToMany(Printer::class);
     }
 }

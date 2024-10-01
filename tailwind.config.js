@@ -14,7 +14,17 @@ export default {
             },
             fontSize: {
                 "2xs": ".625rem" // 10px
-            }
+            },
+            // keyframes: {
+            //     dash: {
+            //       '0%': { backgroundPosition: '0% 100%' },
+            //       '100%': { backgroundPosition: '100% 100%' },
+            //     },
+            //   },
+            //   animation: {
+            //     dash: 'dash 2s linear infinite',
+            //   },
+              
         },
     },
     plugins: [],

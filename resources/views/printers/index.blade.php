@@ -3,26 +3,43 @@
         <section class="text-center pt-6">
             <h1 class="font-bold text-4xl">Выберите Параметры Поиска</h1>
 
-            <x-forms.form action="/search" class="mt-6 flex justify-center items-center gap-5">
+            {{-- <x-forms.form action="/search" class="mt-6 flex justify-center items-center gap-5">
                 <x-forms.input :label="false" name="q2" placeholder="Что ищите?" />
                 <x-forms.select label="" name="schedule">
-                    @php
-                        $prikols = [1, 2, 3, 4, 5, 6, 7];
-                    @endphp
-                    @foreach ($prikols as $prikol)
-                        <option>{{ $prikol }}</option>
+                    <option></option>
+                    @foreach ($printers as $printer)
+                        <option>{{ $printer->model }}</option>
                     @endforeach
                 </x-forms.select>
                 <x-forms.select label="" name="schedule">
-                    @php
-                        $prikols = [1, 2, 3, 4, 5, 6, 7];
-                    @endphp
-                    @foreach ($prikols as $prikol)
-                        <option>{{ $prikol }}</option>
+                    <option></option>
+                    @foreach ($printers as $printer)
+                        <option>{{ $printer->location }}</option>
+                    @endforeach
+                </x-forms.select>
+                <x-forms.button>Поиск</x-forms.button>
+            </x-forms.form> --}}
+
+            <x-forms.form action="/search" class="mt-6 flex justify-center items-center gap-5">
+                <x-forms.input :label="false" placeholder="Что ищите?" name='q' />
+                <x-forms.select label="" name="model">
+                    <option value="">Все модели</option>
+                    {{-- @foreach ($printers as $printer)
+                        {{ dd($printer->model) }}
+                    @endforeach --}}
+                    @foreach ($printers as $printer)
+                        <option value="{{ $printer->model }}">{{ $printer->model }}</option>
+                    @endforeach
+                </x-forms.select>
+                <x-forms.select label="" name="location">
+                    <option value="">Все локации</option>
+                    @foreach ($printers as $printer)
+                        <option value="{{ $printer->location }}">{{ $printer->location }}</option>
                     @endforeach
                 </x-forms.select>
                 <x-forms.button>Поиск</x-forms.button>
             </x-forms.form>
+
         </section>
 
         <section class="pt-10">

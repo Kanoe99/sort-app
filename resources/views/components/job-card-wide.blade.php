@@ -6,20 +6,23 @@
     </div>
 
     <div class="flex-1 flex flex-col">
-        {{-- <a href="#"
-            class="self-start text-sm text-gray-400 transition-colors duration-300">{{ $job->employer->name }}</a> --}}
-
         <h3 class="font-bold text-xl mt-3 group-hover:text-blue-800">
             <a href="#" target="_blank">
                 {{ $printer->model }}
             </a>
+            <p class="mt-6 border-2 py-2">
+                comment =
+                {{ $printer->comment }}
+            </p>
         </h3>
 
     </div>
 
     <div>
-        @foreach ($printer->tags as $tag)
-            <x-tag :$tag />
-        @endforeach
+        @if ($printer->tags)
+            @foreach ($printer->tags as $tag)
+                <x-tag :$tag />
+            @endforeach
+        @endif
     </div>
 </x-panel>

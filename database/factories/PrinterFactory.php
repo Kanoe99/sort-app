@@ -26,8 +26,6 @@ class PrinterFactory extends Factory
         $model = $prefixes[$randomPrefixKey] . ' ' . $names[$randomNameKey] . ' ' . strval(rand(100, 999));
 
 
-        $IP = strval(rand(10, 255) . '.' . rand(10, 255) . '.' . rand(10, 255) . '.' . rand(10, 255));
-
         $statuses = ['подготовка к списанию', 'в эксплуатации', 'требуется ремонт', 'резерв'];
 
 
@@ -35,10 +33,11 @@ class PrinterFactory extends Factory
             'model' => $model,
             'number' => rand(1000, 9999),
             'location' => rand(100, 599),
-            'IP' => array_rand([$IP, 'нет']),
+            'IP' => fake()->unique()->ipv4(),
             'status' => array_rand($statuses),
             'comment' => fake()->text(20),
             'attention' => false,
+
         ];
     }
 }

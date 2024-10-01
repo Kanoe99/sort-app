@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PrinterController::class, 'index']);
 
-Route::get('/jobs/create', [PrinterController::class, 'create'])->middleware('auth');
-Route::post('/jobs', [PrinterController::class, 'store'])->middleware('auth');
+Route::get('/printers/create', [PrinterController::class, 'create'])->middleware('auth');
+Route::post('/printers', [PrinterController::class, 'store'])->middleware('auth');
 
 Route::get('/search', SearchController::class);
 Route::get('/tags/{tag:name}', TagController::class);
