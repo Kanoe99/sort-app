@@ -21,7 +21,7 @@
                     @endforeach
                 @endif
             </div>
-            <x-forms.button>Редактировать</x-forms.button>
+            <x-forms.button :a="true" href="/printers/{{ $printer->id }}/edit">Редактировать</x-forms.button>
         </div>
     </x-panel>
 </x-layout>

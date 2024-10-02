@@ -67,4 +67,58 @@ class PrinterController extends Controller
 
         return redirect('/');
     }
+
+
+    public function edit(Printer $printer)
+    {
+        return view(
+            'printers.edit',
+            [
+                'printer' => $printer
+            ]
+        );
+    }
+    public function update(Printer $printer, Request $request)
+    {
+        // Validate the printer fields
+        $attributes = $request->validate([
+            'model' => ['required', 'string', 'max:255'],
+            'number' => ['required', 'numeric', 'min:1', 'max:16777215'],
+            'location' => ['required', 'string', 'max:255'],
+            'IP' => ['required', 'ip'],
+            'status' => ['required', 'string', 'max:255'],
+            'comment' => ['required', 'string', 'max:255'],
+            'attention' => ['nullable'],
+        ]);
+
+        // Update the printer
+        $printer->update($attributes);
+
+        // Handle the tags (comma-separated string)
+        if ($request->filled('tags')) {
+            // Split the tags by commas and trim whitespace
+            $tags = array_map('trim', explode(',', $request->tags));
+
+            // Find or create the tags, and get their IDs
+            $tagIds = [];
+            foreach ($tags as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]); // Create tag if it doesn't exist
+                $tagIds[] = $tag->id; // Collect the tag IDs
+            }
+
+            // Sync the printer with the tag IDs
+            $printer->tags()->sync($tagIds); // Update the pivot table
+        }
+
+        return redirect("/printers/" . $printer->id);
+    }
+
+
+
+    public function destroy(Printer $printer)
+    {
+        $printer->delete();
+
+        return redirect("/");
+    }
 }
