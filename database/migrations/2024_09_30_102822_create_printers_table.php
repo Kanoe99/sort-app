@@ -17,10 +17,10 @@ return new class extends Migration {
             $table->string('location');
             $table->string('IP')->unique();
             $table->string('status');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->boolean('attention')->default(false);
+            $table->string('logo')->nullable();
             $table->timestamps();
-            $table->index('model');
             $table->index('location');
         });
     }

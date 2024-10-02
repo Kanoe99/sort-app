@@ -6,10 +6,5 @@
         <x-forms.input label="Password" name="password" type="password" />
 
         <x-forms.button class="w-full">Войти</x-forms.button>
-
-        <x-forms.link-wrapper>
-            Нет аккаунта?
-            <x-forms.link href="/register">Регистрация</x-forms.link>
-        </x-forms.link-wrapper>
     </x-forms.form>
 </x-layout>

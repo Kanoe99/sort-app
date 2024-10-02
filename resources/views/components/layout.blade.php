@@ -44,7 +44,6 @@
 
             @guest
                 <div class="space-x-6 font-bold">
-                    <a href="/register">Зарегистрироваться</a>
                     <a href="/login">Войти</a>
                 </div>
             @endguest

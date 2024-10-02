@@ -27,6 +27,8 @@
         <x-forms.input label="IP" placeholder="255.10.192.12" name="IP" type="text"
             value="{{ $printer->IP }}" />
         <x-forms.checkbox label="Особое внимание" name="attention" :checked="$isChecked" />
+        <x-forms.input label="Загрузить картинку (.jpg, .jpeg, .png)" type="file" name="logo" id="logowide"
+            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ $printer->logo }}" />
 
         <x-forms.divider />
 
