@@ -1,8 +1,7 @@
 @php
     $isChecked = $printer->attention == 1;
     $tags = $printer->tags->pluck('name')->implode(', ');
-
-    $upload = ($printer->logo ? 'Обновить' : 'Загрузить') . ' картинку';
+    $upload = ($printer->logo ? 'Обновить' : 'Загрузить') . ' фото';
 @endphp
 
 <x-layout>
@@ -14,8 +13,11 @@
         </div>
     </div>
 
-    <x-forms.form method="POST" action="/printers/{{ $printer->id }}" class="space-y-6 mt-8">
+    <x-forms.form method="POST" action="/printers/{{ $printer->id }}" class="space-y-6 mt-8"
+        enctype="multipart/form-data">
         @method('PATCH')
+        @csrf
+
         <x-forms.input label="Модель" placeholder="Принтер Samsung 400" name="model" type="text"
             value="{{ $printer->model }}" />
         <x-forms.input label="Номер" placeholder="0001" name="number" type="number" min="1" max="16777215"
@@ -28,28 +30,43 @@
             type="text" value="{{ $printer->comment }}" />
         <x-forms.input label="IP" placeholder="255.10.192.12" name="IP" type="text"
             value="{{ $printer->IP }}" />
-        <x-forms.checkbox label="Особое внимание" name="attention" :checked="$isChecked" />
-        <x-forms.input label="{{ $upload }} (.jpg, .jpeg, .png)" type="file" name="logo[]" id="logowide"
-            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ asset('storage/' . $printer->logo) }}"
-            multiple />
-        <x-placeholder>
+        <x-forms.checkbox label="Особое внимание" name="attention" checked="{{ $isChecked }}" />
 
+        <!-- Plus sign to add photos -->
+        <div class="flex gap-2">
+            <label for="logo-upload" class="cursor-pointer text-blue-500 text-sm">+ Добавить фото</label>
+            <input type="file" id="logo-upload" name="logo[]" accept=".jpg,.jpeg,.png" multiple class="hidden"
+                onchange="handleFileSelect(this)">
+        </div>
+
+        <!-- Preview existing and new photos -->
+        <div id="logo-preview" class="flex gap-2 mt-4 flex-wrap">
             @php
                 $logos = json_decode($printer->logo);
             @endphp
 
-            @if ($printer->logo)
-                @foreach ($logos as $logo)
-                    <img src="{{ asset('storage/' . $logo) }}" alt="">
+            <!-- Display existing photos with 'X' for removal -->
+            @if ($logos)
+                @foreach ($logos as $index => $logo)
+                    <div class="relative" id="existing-logo-{{ $index }}">
+                        <img src="{{ asset('storage/' . $logo) }}" class="w-1/4">
+                        <button type="button" class="absolute top-0 right-0 text-red-500"
+                            onclick="removeExistingPhoto('{{ $logo }}', {{ $index }})">
+                            X
+                        </button>
+                    </div>
                 @endforeach
             @else
-                Тут пока ничего нет
+                <p>Тут пока ничего нет</p>
             @endif
-        </x-placeholder>
+        </div>
+
+        <!-- Hidden input to track removed photos -->
+        <input type="hidden" name="removed_logos" id="removed-logos">
 
         <x-forms.divider />
 
-        <x-forms.input label="Теги(через запятую)" name="tags"
+        <x-forms.input label="Теги (через запятую)" name="tags"
             placeholder="хороший, под списание, нужен кому-то в 311" type="text" value="{{ $tags }}" />
 
         <div class="flex gap-5">
@@ -68,3 +85,45 @@
 
     <x-modal />
 </x-layout>
+
+<script>
+    let removedLogos = []; // Array to track removed logos
+
+    // Handle the file selection and display previews
+    function handleFileSelect(input) {
+        const fileInput = document.getElementById('logo-upload');
+        const logoPreview = document.getElementById('logo-preview');
+
+        // Loop through selected files and display them
+        Array.from(fileInput.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.classList.add('relative');
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('w-1/4');
+
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'X';
+                removeButton.classList.add('absolute', 'top-0', 'right-0', 'text-red-500');
+                removeButton.onclick = function() {
+                    div.remove(); // Remove the preview div
+                };
+
+                div.appendChild(img);
+                div.appendChild(removeButton);
+                logoPreview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Mark an existing photo for removal
+    function removeExistingPhoto(logo, index) {
+        removedLogos.push(logo); // Add to the removed logos array
+        document.getElementById(`existing-logo-${index}`).remove(); // Remove the preview
+        document.getElementById('removed-logos').value = JSON.stringify(removedLogos); // Update hidden input
+    }
+</script>

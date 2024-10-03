@@ -11,11 +11,24 @@ class SearchController extends Controller
     {
         // Get the query parameters
         $query = Printer::query();
-
-        // Search by general query (e.g., model name)
         if ($request->filled('q')) {
-            $query->whereRaw("LOWER(comment) LIKE ?", ['%' . strtolower($request->input('q')) . '%']);
+            $searchTerm = $request->input('q');
+
+            // Convert the search term to lowercase and then capitalize each word
+            $searchTerm = mb_convert_case($searchTerm, MB_CASE_TITLE, "UTF-8");
+
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereRaw("model LIKE ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw("location LIKE ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw("IP LIKE ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw("comment LIKE ?", ['%' . $searchTerm . '%']);
+            });
         }
+
+
+
+
+
 
         // Filter by model if provided
         if ($request->filled('model')) {
@@ -33,5 +46,4 @@ class SearchController extends Controller
         // Return the results view
         return view('results', ['printers' => $printers]);
     }
-
 }

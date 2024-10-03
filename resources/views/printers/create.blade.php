@@ -12,7 +12,7 @@
         <x-forms.checkbox label="Особое внимание" name="attention" />
 
         <div class="mb-4">
-            <x-forms.input label="Загрузить картинку (.jpg, .jpeg, .png)" type="file" name="logo[]" id="logowide"
+            <x-forms.input label="Загрузить фото (.jpg, .jpeg, .png)" type="file" name="logo[]" id="logowide"
                 accept=".jpg, .jpeg, .png" class="mt-1 block w-full" multiple />
         </div>
 

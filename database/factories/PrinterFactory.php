@@ -30,7 +30,7 @@ class PrinterFactory extends Factory
 
 
         return [
-            'model' => $model,
+            'model' => strval($model),
             'number' => rand(1000, 9999),
             'location' => rand(100, 599),
             'IP' => fake()->unique()->ipv4(),
