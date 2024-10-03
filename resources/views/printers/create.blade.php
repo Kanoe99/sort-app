@@ -1,7 +1,7 @@
 <x-layout>
     <x-page-heading>Новый Принтер</x-page-heading>
 
-    <x-forms.form method="POST" action="/printers" class="space-y-6">
+    <x-forms.form method="POST" action="/printers" class="space-y-6" enctype="multipart/form-data">
         <x-forms.input label="Модель" placeholder="Принтер Samsung 400" name="model" type="text" />
         <x-forms.input label="Номер" placeholder="0001" name="number" type="number" min="1" max="16777215" />
         <x-forms.input label="Локация" placeholder="311" name="location" type="text" />
@@ -12,10 +12,8 @@
         <x-forms.checkbox label="Особое внимание" name="attention" />
 
         <div class="mb-4">
-            {{-- <x-label label="" name="">Загрузить картинку</x-label>
-            <label for="image" class="block text-sm font-medium text-gray-700">Upload Printer Image</label> --}}
-            <x-forms.input label="Загрузить картинку (.jpg, .jpeg, .png)" type="file" name="logo" id="logowide"
-                accept=".jpg, .jpeg, .png" class="mt-1 block w-full" />
+            <x-forms.input label="Загрузить картинку (.jpg, .jpeg, .png)" type="file" name="logo[]" id="logowide"
+                accept=".jpg, .jpeg, .png" class="mt-1 block w-full" multiple />
         </div>
 
         <x-forms.divider />

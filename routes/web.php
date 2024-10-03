@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [PrinterController::class, 'index']);
 
+    //prevent manual accesing non get routes
+
     Route::get('/printers/create', [PrinterController::class, 'create']);
     Route::post('/printers', [PrinterController::class, 'store']);
     Route::get('/printers/{printer}', [PrinterController::class, 'show'])->name('printers.show');
-    //working on
     Route::get('/printers/{printer}/edit', [PrinterController::class, 'edit']);
     Route::patch('/printers/{printer}', [PrinterController::class, 'update']);
     Route::delete('/printers/{printer}', [PrinterController::class, 'destroy']);

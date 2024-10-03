@@ -5,7 +5,6 @@
     $upload = ($printer->logo ? 'Обновить' : 'Загрузить') . ' картинку';
 @endphp
 
-
 <x-layout>
     <div class="flex gap-5 justify-between items-end max-w-2xl mx-auto">
         <x-page-heading class="w-2/3">Обновить Параметры</x-page-heading>
@@ -30,11 +29,19 @@
         <x-forms.input label="IP" placeholder="255.10.192.12" name="IP" type="text"
             value="{{ $printer->IP }}" />
         <x-forms.checkbox label="Особое внимание" name="attention" :checked="$isChecked" />
-        <x-forms.input label="{{ $upload }} (.jpg, .jpeg, .png)" type="file" name="logo" id="logowide"
-            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ asset('storage/' . $printer->logo) }}" />
+        <x-forms.input label="{{ $upload }} (.jpg, .jpeg, .png)" type="file" name="logo[]" id="logowide"
+            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ asset('storage/' . $printer->logo) }}"
+            multiple />
         <x-placeholder>
+
+            @php
+                $logos = json_decode($printer->logo);
+            @endphp
+
             @if ($printer->logo)
-                <img src="{{ asset('storage/' . $printer->logo) }}" alt="">
+                @foreach ($logos as $logo)
+                    <img src="{{ asset('storage/' . $logo) }}" alt="">
+                @endforeach
             @else
                 Тут пока ничего нет
             @endif

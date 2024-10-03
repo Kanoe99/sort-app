@@ -7,6 +7,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class PrinterController extends Controller
@@ -49,6 +50,7 @@ class PrinterController extends Controller
      */
     public function store(Request $request)
     {
+
         $attributes = $request->validate([
             'model' => ['required', 'string', 'max:255'],
             'number' => ['required', 'numeric', 'min:1', 'max:16777215'],
@@ -58,7 +60,7 @@ class PrinterController extends Controller
             'comment' => ['nullable', 'string', 'max:255'],
             'tags' => ['nullable', 'string'],
             'attention' => ['nullable'],
-            'logo' => ['nullable', 'mimes:jpg,jpeg,png',],
+            'logo.*' => ['nullable', 'mimes:jpg,jpeg,png',],
         ], [
             'model.required' => 'Укажите модель принтера.',
             'model.max' => 'Максимум 255 символов.',
@@ -81,13 +83,25 @@ class PrinterController extends Controller
             'logo.mimes' => 'Только PNG, JPG или JPEG!',
         ]);
 
+
         $attributes['attention'] = $request->has('attention');
 
-        // Handle the logo upload if there's a new logo
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos', 'public');
-            $attributes['logo'] = $logoPath;
+
+        if ($request->file('logo')) {
+            $folderName = $request->IP; // Or dynamic folder name based on printer model, etc.
+
+            // Ensure the directory exists, create it if not
+            if (!Storage::disk('public')->exists("logos/{$folderName}")) {
+                Storage::disk('public')->makeDirectory("logos/{$folderName}");
+            }
+
+            foreach ($request->file('logo') as $file) {
+                $logoPaths[] = $file->store("logos/{$folderName}", 'public'); // Store each file
+            }
+
+            $attributes['logo'] = json_encode($logoPaths);
         }
+
 
         $printer = Auth::user()->printers()->create(Arr::except($attributes, 'tags'));
 

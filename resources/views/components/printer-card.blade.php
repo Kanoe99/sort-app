@@ -8,8 +8,11 @@
 
         {{-- @dd(asset('storage/' . $printer->logo)); --}}
 
+
         @if ($printer->logo)
-            <img src="{{ asset('storage/' . $printer->logo) }}" class="w-[42px] rounded-lg" alt="">
+            {{-- @foreach (json_decode($printer->logo) as $logo)
+                <img src="{{ asset('storage/' . $printer->logo) }}" class="w-[42px] rounded-lg" alt="">
+            @endforeach --}}
         @else
             <div class="rounded-lg w-fit p-1 px-3 border-2 border-dashed text-[9px]">
                 Место <br />
