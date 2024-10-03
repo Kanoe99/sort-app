@@ -35,7 +35,7 @@
             <div class="grid lg:grid-cols-3 gap-8 mt-6">
 
                 @foreach ($aprinters as $printer)
-                    <x-job-card :$printer />
+                    <x-printer-card :$printer />
                 @endforeach
             </div>
         </section>
@@ -67,7 +67,7 @@
 
             <div class="mt-6 space-y-6">
                 @foreach ($printers as $printer)
-                    <x-job-card-wide :$printer />
+                    <x-printer-card-wide :$printer />
                 @endforeach
             </div>
         </section>

@@ -3,7 +3,7 @@
 
     <div class="space-y-6">
         @foreach ($printers as $printer)
-            <x-job-card-wide :$printer />
+            <x-printer-card-wide :$printer />
         @endforeach
     </div>
 </x-layout>

@@ -83,6 +83,12 @@ class PrinterController extends Controller
 
         $attributes['attention'] = $request->has('attention');
 
+        // Handle the logo upload if there's a new logo
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+            $attributes['logo'] = $logoPath;
+        }
+
         $printer = Auth::user()->printers()->create(Arr::except($attributes, 'tags'));
 
         if ($attributes['tags'] ?? false) {

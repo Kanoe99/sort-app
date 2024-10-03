@@ -5,10 +5,19 @@
         <div class="self-start text-sm">{{ $printer->IP }}</div>
 
         {{-- Check if the printer has a logo and display it --}}
+
+        {{-- @dd(asset('storage/' . $printer->logo)); --}}
+
         @if ($printer->logo)
-            <img src="{{ asset('storage/' . $printer->logo) }}" alt="Printer Logo"
-                class="rounded-xl w-[42px] h-[42px] bg-white">
+            <img src="{{ asset('storage/' . $printer->logo) }}" class="w-[42px] rounded-lg" alt="">
+        @else
+            <div class="rounded-lg w-fit p-1 px-3 border-2 border-dashed text-[9px]">
+                Место <br />
+                для <br />
+                фото
+            </div>
         @endif
+
 
         <div class="py-8">
             <h3 class="group-hover:text-blue-800 text-xl font-bold transition-colors duration-300">

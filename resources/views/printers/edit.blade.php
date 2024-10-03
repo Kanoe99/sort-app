@@ -1,7 +1,10 @@
 @php
     $isChecked = $printer->attention == 1;
     $tags = $printer->tags->pluck('name')->implode(', ');
+
+    $upload = ($printer->logo ? 'Обновить' : 'Загрузить') . ' картинку';
 @endphp
+
 
 <x-layout>
     <div class="flex gap-5 justify-between items-end max-w-2xl mx-auto">
@@ -27,8 +30,15 @@
         <x-forms.input label="IP" placeholder="255.10.192.12" name="IP" type="text"
             value="{{ $printer->IP }}" />
         <x-forms.checkbox label="Особое внимание" name="attention" :checked="$isChecked" />
-        <x-forms.input label="Загрузить картинку (.jpg, .jpeg, .png)" type="file" name="logo" id="logowide"
-            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ $printer->logo }}" />
+        <x-forms.input label="{{ $upload }} (.jpg, .jpeg, .png)" type="file" name="logo" id="logowide"
+            accept=".jpg, .jpeg, .png" class="mt-1 block w-full" value="{{ asset('storage/' . $printer->logo) }}" />
+        <x-placeholder>
+            @if ($printer->logo)
+                <img src="{{ asset('storage/' . $printer->logo) }}" alt="">
+            @else
+                Тут пока ничего нет
+            @endif
+        </x-placeholder>
 
         <x-forms.divider />
 
@@ -37,7 +47,9 @@
 
         <div class="flex gap-5">
             <x-forms.button type="button" class="hover:border-red-500 !bg-black text-white w-1/3"
-                onclick="showModal()">Удалить</x-forms.button>
+                onclick="showModal()">
+                Удалить
+            </x-forms.button>
             <x-forms.button class="w-2/3 hover:border-green-500">Сохранить</x-forms.button>
         </div>
     </x-forms.form>
