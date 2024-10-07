@@ -14,7 +14,7 @@ class PrinterSeeder extends Seeder
      */
     public function run(): void
     {
-        $tags = Tag::factory(3)->create();
+        $tags = Tag::factory(20)->create();
 
         Printer::factory(20)->hasAttached($tags)->create(new Sequence([
             'attention' => false,

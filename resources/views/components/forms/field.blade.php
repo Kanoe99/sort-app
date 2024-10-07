@@ -1,6 +1,6 @@
 @props(['label', 'name'])
 
-<div>
+<div class="w-full">
     @if ($label)
         <x-forms.label :$name :$label />
     @endif

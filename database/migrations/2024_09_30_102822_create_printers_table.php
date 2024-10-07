@@ -12,14 +12,27 @@ return new class extends Migration {
     {
         Schema::create('printers', function (Blueprint $table) {
             $table->id();
+
+            //new
+            $table->string('type');
+
             $table->string('model');
             $table->unsignedMediumInteger('number');
             $table->string('location');
-            $table->string('IP')->unique();
+
+            //update
+            $table->string('IP')->unique()->nullable();
+
             $table->string('status');
             $table->string('comment')->nullable();
             $table->boolean('attention')->default(false);
             $table->string('logo')->nullable();
+
+            //new
+            $table->string('counter');
+            $table->string('counter-date');
+            $table->string('fix-date');
+
             $table->timestamps();
             $table->index('location');
         });

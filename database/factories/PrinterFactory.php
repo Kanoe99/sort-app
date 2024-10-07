@@ -30,6 +30,7 @@ class PrinterFactory extends Factory
 
 
         return [
+            'type' => fake()->text(5),
             'model' => strval($model),
             'number' => rand(1000, 9999),
             'location' => rand(100, 599),
@@ -37,7 +38,9 @@ class PrinterFactory extends Factory
             'status' => array_rand($statuses),
             'comment' => fake()->text(20),
             'attention' => false,
-
+            'counter' => fake()->numberBetween(100, 9999),
+            'counter-date' => fake()->dateTime(),
+            'fix-date' => fake()->dateTime(),
         ];
     }
 }

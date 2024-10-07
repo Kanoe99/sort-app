@@ -1,80 +1,84 @@
 {{-- @dd(['attention printers' => $aprinters, 'printers' => $printers]) --}}
 
 <x-layout>
-    <div class="space-y-10">
-        <section class="text-center pt-6">
-            <h2 class="font-bold text-4xl">Выберите Параметры Поиска</h2>
+    <section class="flex justify-between gap-5 mt-6">
 
-            <x-forms.form action="/search" class="mt-6 flex justify-center items-center gap-5">
-                <x-forms.input :label="false" placeholder="Что ищете?" name='q' class="border-white/10 !w-[250px]"
-                    oninput="adjustWidth(this)" />
+        <div class="w-2/3 space-y-6">
+            <section>
+                @if ($tags->isEmpty())
+                    <x-placeholder>
+                        Тут нет тегов ಠ_ಠ
+                    </x-placeholder>
+                @else
+                    <div class="!h-20">
+                        <x-carousel>
+                            @foreach ($tags as $tag)
+                                <x-tag :$tag />
+                            @endforeach
+                        </x-carousel>
+                    </div>
+                @endif
+            </section>
 
-                <x-forms.select label="" name="model" id="model">
-                    <option value="">Все модели</option>
-                    @foreach ($printers as $printer)
-                        <option value="{{ $printer->model }}">{{ $printer->model }}</option>
-                    @endforeach
-                </x-forms.select>
 
-                <x-forms.select label="" name="location" id="location">
-                    <option value="">Все локации</option>
-                    @foreach ($printers as $printer)
-                        <option value="{{ $printer->location }}">{{ $printer->location }}</option>
-                    @endforeach
-                </x-forms.select>
+            <section class="mt-6 space-y-6">
+                <x-section-heading>Последние добавленные</x-section-heading>
+                @if ($printers->isEmpty())
+                    <x-placeholder>
+                        Тут нет принтеров <span class="ml-5">(╯°□°）╯︵ ┻━┻</span>
+                    </x-placeholder>
+                @endif
 
-                <x-forms.button>Поиск</x-forms.button>
-            </x-forms.form>
-
-        </section>
-
-        <section class="pt-10">
-            <x-section-heading>Требуют Внимания</x-section-heading>
-            @if ($aprinters->isEmpty())
-                <x-placeholder>
-                    Никакой принтер
-                    не требует
-                    внимания ༼ つ ◕_◕ ༽つ
-                </x-placeholder>
-            @endif
-
-            <div class="grid lg:grid-cols-3 gap-8 mt-6">
-                @foreach ($aprinters as $printer)
-                    <x-printer-card :$printer />
-                @endforeach
-            </div>
-        </section>
-
-        <section>
-            <x-section-heading>Теги</x-section-heading>
-            @if ($tags->isEmpty())
-                <x-placeholder>
-                    Тут нет тегов ಠ_ಠ
-                </x-placeholder>
-            @endif
-
-            <div class="mt-6 space-x-1">
-                @foreach ($tags as $tag)
-                    <x-tag :$tag />
-                @endforeach
-            </div>
-        </section>
-
-        <section>
-            <x-section-heading>Последние добавленные</x-section-heading>
-            @if ($printers->isEmpty())
-                <x-placeholder>
-                    Тут нет принтеров <span class="ml-5">(╯°□°）╯︵ ┻━┻</span>
-                </x-placeholder>
-            @endif
-
-            <div class="mt-6 space-y-6">
                 @foreach ($printers as $printer)
                     <x-printer-card-wide :$printer />
                 @endforeach
+
+            </section>
+        </div>
+
+        <div class="w-1/3 space-y-6">
+
+            <div class="!h-20">
+                <x-forms.form action="/search" class="flex justify-center items-center gap-5 !mx-0 w-[100%]">
+                    <x-forms.input :label="false" placeholder="Что ищете?" name='q'
+                        class="border-white/10 w-full" />
+
+                    {{-- <x-forms.select label="" name="model" id="model">
+                <option value="">Все модели</option>
+                @foreach ($printers as $printer)
+                    <option value="{{ $printer->model }}">{{ $printer->model }}</option>
+                @endforeach
+            </x-forms.select>
+    
+            <x-forms.select label="" name="location" id="location">
+                <option value="">Все локации</option>
+                @foreach ($printers as $printer)
+                    <option>tion value="{{ $printer->location }}">{{ $printer->location }}</option>
+                @endforeach
+            </x-forms.select> --}}
+
+                    <x-forms.button>Поиск</x-forms.button>
+                </x-forms.form>
             </div>
-        </section>
-    </div>
+
+            <section class="space-y-6">
+                <x-section-heading>Требуют Внимания</x-section-heading>
+                <x-fade>
+                    @if ($aprinters->isEmpty())
+                        <x-placeholder>
+                            Никакой принтер
+                            не требует
+                            внимания ༼ つ ◕_◕ ༽つ
+                        </x-placeholder>
+                    @endif
+
+                    @foreach ($aprinters as $printer)
+                        <x-printer-card :$printer />
+                    @endforeach
+                </x-fade>
+            </section>
+        </div>
+    </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -104,19 +108,5 @@
                 }
             });
         });
-
-        function adjustWidth(input) {
-            input.style.width = 'auto';
-
-            const width = input.scrollWidth;
-
-            input.style.width = `${Math.min(width, 350)}px`;
-            input.style.minWidth = 'fit-content';
-        }
     </script>
-    <style>
-        #dynamicInput {
-            min-width: fit-content;
-        }
-    </style>
 </x-layout>

@@ -1,6 +1,6 @@
 @props(['printer'])
 
-<x-panel class="flex flex-col text-center">
+<x-panel class="flex flex-col text-center w-full lg:w-[48%] xl:w-[49%]">
     <a href="/printers/{{ $printer->id }}">
         <div class="self-start text-sm">{{ $printer->IP }}</div>
 
