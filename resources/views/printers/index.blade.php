@@ -1,5 +1,6 @@
 {{-- @dd(['attention printers' => $aprinters, 'printers' => $printers]) --}}
 
+
 <x-layout>
     <section class="flex justify-between gap-5 mt-10">
 

@@ -16,17 +16,3 @@
         </div>
     </div>
 </div>
-
-{{-- <script>
-    document.getElementById('cancel-delete').onclick = function() {
-        document.getElementById('modal').classList.add('hidden');
-    };
-
-    document.getElementById('confirm-delete').onclick = function() {
-        document.getElementById('delete-form').submit();
-    };
-
-    function showModal() {
-        document.getElementById('modal').classList.remove('hidden');
-    }
-</script> --}}

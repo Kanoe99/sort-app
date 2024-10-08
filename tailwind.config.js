@@ -74,6 +74,31 @@ export default {
                     cursor: 'pointer', 
                     transform: 'translateY(-50%) rotate(-45deg)',
                 },
+                '.slider': {
+                    position: 'relative',
+                    marginTop: '100px',
+                    width: '100%',
+                    height: 'calc(100vh - 5rem)',
+                    overflow: 'hidden',
+                },
+                '.item': {
+                    position: 'absolute',
+                    width: '30%',
+                    height: '100%',
+                    textAlign: 'justify',
+                    borderRadius: '10px',
+                    padding: '20px',
+                    transition: '.5s',
+                    left: 'calc(50% - 110px)',
+                    top: '0',
+                    backdropFilter: 'blur(10px)',
+                },
+                '#prev-list': {
+                    left: '50px',
+                },
+                '#next-list': {
+                    right: '50px',
+                },
             });
         }),
     ],

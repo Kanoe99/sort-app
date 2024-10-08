@@ -16,10 +16,13 @@
 <body class="bg-black text-white font-hanken-grotesk pb-10">
     <div class="px-10">
         <nav class="flex justify-between items-center py-4 border-b border-white/10">
-            <div>
+            <div class="flex gap-5 items-center">
                 <a href="/">
                     <img class="w-[42px]" src="{{ Vite::asset('resources/images/logo.png') }}" alt="">
                 </a>
+
+                <x-forms.link href="/">На главную</x-forms.link>
+                <x-forms.link href="/all">Весь список</x-forms.link>
             </div>
 
             @auth

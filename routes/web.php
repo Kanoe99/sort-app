@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/printers/create', [PrinterController::class, 'create']);
     Route::post('/printers', [PrinterController::class, 'store']);
+    Route::get('/all', [PrinterController::class, 'all']);
     Route::get('/printers/{printer}', [PrinterController::class, 'show'])->name('printers.show');
     Route::get('/printers/{printer}/edit', [PrinterController::class, 'edit']);
     Route::patch('/printers/{printer}', [PrinterController::class, 'update']);
