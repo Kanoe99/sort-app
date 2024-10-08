@@ -70,8 +70,7 @@
             placeholder="хороший, под списание, нужен кому-то в 311" type="text" value="{{ $tags }}" />
 
         <div class="flex gap-5">
-            <x-forms.button type="button" class="hover:border-red-500 !bg-black text-white w-1/3"
-                onclick="showModal()">
+            <x-forms.button type="button" id="showModal" class="hover:border-red-500 !bg-black text-white w-1/3">
                 Удалить
             </x-forms.button>
             <x-forms.button class="w-2/3 hover:border-green-500">Сохранить</x-forms.button>

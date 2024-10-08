@@ -1,3 +1,6 @@
+@vite('resources/js/app.js')
+
+
 <div class="fixed inset-0 flex items-center justify-center z-50 hidden" id="modal">
     <div class="bg-black bg-opacity-50 fixed inset-0"></div>
     <div
@@ -14,7 +17,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     document.getElementById('cancel-delete').onclick = function() {
         document.getElementById('modal').classList.add('hidden');
     };
@@ -26,4 +29,4 @@
     function showModal() {
         document.getElementById('modal').classList.remove('hidden');
     }
-</script>
+</script> --}}

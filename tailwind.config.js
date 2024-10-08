@@ -17,15 +17,6 @@ export default {
             fontSize: {
                 "2xs": ".625rem" // 10px
             },
-            // keyframes: {
-            //     dash: {
-            //       '0%': { backgroundPosition: '0% 100%' },
-            //       '100%': { backgroundPosition: '100% 100%' },
-            //     },
-            // },
-            // animation: {
-            //     dash: 'dash 2s linear infinite',
-            // },
         },
     },
     plugins: [
@@ -57,7 +48,32 @@ export default {
                     height: '30px',
                     backdropFilter: 'blur(1px)',
                     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                }
+                },
+                // New components for angle-left and angle-right
+                '.angle-left': {
+                    height: '0.75rem',
+                    width: '0.75rem', 
+                    borderLeftWidth: '2px', 
+                    borderBottomWidth: '2px', 
+                    borderColor: 'white', 
+                    position: 'absolute',
+                    top: '50%', 
+                    left: '0.5rem', 
+                    cursor: 'pointer',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                },
+                '.angle-right': {
+                    height: '0.75rem',
+                    width: '0.75rem',
+                    borderRightWidth: '2px', 
+                    borderBottomWidth: '2px',
+                    borderColor: 'white', 
+                    position: 'absolute',
+                    top: '50%', 
+                    right: '0.5rem', 
+                    cursor: 'pointer', 
+                    transform: 'translateY(-50%) rotate(-45deg)',
+                },
             });
         }),
     ],

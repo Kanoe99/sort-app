@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-black text-white font-hanken-grotesk pb-20">
+<body class="bg-black text-white font-hanken-grotesk pb-10">
     <div class="px-10">
         <nav class="flex justify-between items-center py-4 border-b border-white/10">
             <div>
@@ -21,13 +21,6 @@
                     <img class="w-[42px]" src="{{ Vite::asset('resources/images/logo.png') }}" alt="">
                 </a>
             </div>
-
-            {{-- <div class="space-x-6 font-bold">
-                <a href="/">Пример</a>
-                <a href="#">Пример</a>
-                <a href="#">Пример</a>
-                <a href="#">Пример</a>
-            </div> --}}
 
             @auth
                 <div class="space-x-6 font-bold flex">

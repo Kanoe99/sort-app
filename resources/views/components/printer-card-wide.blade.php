@@ -1,6 +1,6 @@
 @props(['printer'])
 
-<x-panel class="flex gap-x-6">
+<x-panel {{ $attributes->merge(['class' => 'flex gap-x-6']) }}>
     {{-- <a href="/printers/{{ $printer->id }}">
         <div>
             тут будет лого
