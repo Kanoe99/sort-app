@@ -5,8 +5,8 @@
 @endphp
 
 <x-layout>
-    <div class="flex gap-5 justify-between items-end max-w-2xl mx-auto">
-        <x-page-heading class="w-2/3">Обновить Параметры</x-page-heading>
+    <div class="flex gap-5 justify-between items-end max-w-2xl mx-auto mt-6">
+        <x-page-heading class="w-2/3 !text-left">Обновить Параметры</x-page-heading>
         <div class="flex w-1/3 gap-2 justify-end">
             <x-forms.link :button="false" href="/printers/{{ $printer->id }}">Назад</x-forms.link>
             <x-forms.link :button="false" href="/">На главную</x-forms.link>
@@ -18,6 +18,8 @@
         @method('PATCH')
         @csrf
 
+        <x-forms.input label="Тип оборудования" placeholder="Принтер" name="type" type="text"
+            value="{{ $printer->type }}" />
         <x-forms.input label="Модель" placeholder="Принтер Samsung 400" name="model" type="text"
             value="{{ $printer->model }}" />
         <x-forms.input label="Номер" placeholder="0001" name="number" type="number" min="1" max="16777215"
@@ -28,8 +30,61 @@
             value="{{ $printer->status }}" />
         <x-forms.input label="Комментарий" placeholder="Вот об этом принтере можно сказать, что.." name="comment"
             type="text" value="{{ $printer->comment }}" />
-        <x-forms.input label="IP" placeholder="255.10.192.12" name="IP" type="text"
-            value="{{ $printer->IP }}" />
+        <x-forms.select name="ip_exists" label="Есть IP?" id="ip-select" class="w-full" onchange="toggleIpField()">
+            <option value="yes" {{ $printer->IP ? 'selected' : '' }}>Есть</option>
+            <option value="no" {{ !$printer->IP ? 'selected' : '' }}>Нету</option>
+        </x-forms.select>
+
+        <div id="ip-container" style="{{ $printer->IP ? '' : 'display: none;' }}">
+            <div class="inline-flex items-center gap-x-2" id="ip-square">
+                <span class="w-2 h-2 bg-white inline-block"></span>
+                <label class="font-bold" for="ip" id="ip-label">IP адрес</label>
+            </div>
+            <script>
+                const exists = document.getElementById('ip_exists');
+                const ip = document.getElementById('ip');
+
+                if (exists.value.toLowerCase() == 'no') {
+                    //logic for not displaying errors related to ip
+                }
+            </script>
+            <x-forms.input label="" placeholder="255.10.192.12" name="IP" id="ip"
+                value="{{ $printer->IP }}" />
+        </div>
+
+        <script>
+            function toggleIpField() {
+                const select = document.getElementById('ip-select');
+                const ipContainer = document.getElementById('ip-container');
+
+                if (select.value === 'yes') {
+                    ipContainer.style.display = 'block';
+                } else {
+                    ipContainer.style.display = 'none';
+                }
+            }
+
+            // Initialize visibility based on the current select value on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                toggleIpField();
+            });
+        </script>
+
+
+        <div class="flex justify-between items-center gap-5">
+            <x-forms.input label="Счётчик страниц" placeholder="1000" name="counter" type="text"
+                value="{{ $printer->counter }}" />
+            <x-panel class="mt-[1.7rem] text-nowrap">
+                Дата последнего изменения -
+                {{ $printer->counterDate }}
+            </x-panel>
+        </div>
+
+
+        <x-forms.input label="Дата последнего ремонта" placeholder="01.10.2024" name="fixDate" type="date"
+            value="{{ \Carbon\Carbon::parse($printer->fixDate)->format('Y-m-d') }}" />
+
+
         <x-forms.checkbox label="Особое внимание" name="attention" checked="{{ $isChecked }}" />
 
         <!-- Plus sign to add photos -->
@@ -57,7 +112,7 @@
                     </div>
                 @endforeach
             @else
-                <p>Тут пока ничего нет</p>
+                <x-placeholder>Тут пока ничего нет</x-placeholder>
             @endif
         </div>
 

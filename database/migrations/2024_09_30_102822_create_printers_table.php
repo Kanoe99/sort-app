@@ -13,14 +13,18 @@ return new class extends Migration {
         Schema::create('printers', function (Blueprint $table) {
             $table->id();
 
-            //new
+            // New
             $table->string('type');
 
             $table->string('model');
-            $table->unsignedMediumInteger('number');
+
+            // Number became unique
+            $table->unsignedMediumInteger('number')->unique();
+
             $table->string('location');
 
-            //update
+            // Update
+            // Should have a checkbox
             $table->string('IP')->unique()->nullable();
 
             $table->string('status');
@@ -28,10 +32,10 @@ return new class extends Migration {
             $table->boolean('attention')->default(false);
             $table->string('logo')->nullable();
 
-            //new
-            $table->string('counter');
-            $table->string('counter-date');
-            $table->string('fix-date');
+            // New
+            $table->string('counter'); // Assuming this is still a string
+            $table->dateTime('counterDate'); // Change to datetime
+            $table->dateTime('fixDate')->nullable(); // Change to datetime
 
             $table->timestamps();
             $table->index('location');
@@ -43,4 +47,5 @@ return new class extends Migration {
         Schema::dropIfExists('printers');
     }
 };
+
 

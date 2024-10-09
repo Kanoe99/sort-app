@@ -21,7 +21,6 @@
                 @endif
             </section>
 
-
             <x-carousel-book :printers="$printers" />
         </div>
 
