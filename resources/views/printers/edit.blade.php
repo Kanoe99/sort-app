@@ -30,27 +30,9 @@
             value="{{ $printer->status }}" />
         <x-forms.input label="Комментарий" placeholder="Вот об этом принтере можно сказать, что.." name="comment"
             type="text" value="{{ $printer->comment }}" />
-        <x-forms.select name="ip_exists" label="Есть IP?" id="ip-select" class="w-full" onchange="toggleIpField()">
-            <option value="yes" {{ $printer->IP ? 'selected' : '' }}>Есть</option>
-            <option value="no" {{ !$printer->IP ? 'selected' : '' }}>Нету</option>
-        </x-forms.select>
 
-        <div id="ip-container" style="{{ $printer->IP ? '' : 'display: none;' }}">
-            <div class="inline-flex items-center gap-x-2" id="ip-square">
-                <span class="w-2 h-2 bg-white inline-block"></span>
-                <label class="font-bold" for="ip" id="ip-label">IP адрес</label>
-            </div>
-            <script>
-                const exists = document.getElementById('ip_exists');
-                const ip = document.getElementById('ip');
 
-                if (exists.value.toLowerCase() == 'no') {
-                    //logic for not displaying errors related to ip
-                }
-            </script>
-            <x-forms.input label="" placeholder="255.10.192.12" name="IP" id="ip"
-                value="{{ $printer->IP }}" />
-        </div>
+        <x-ip-address :printer="$printer" />
 
         <script>
             function toggleIpField() {

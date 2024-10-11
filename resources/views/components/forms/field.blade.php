@@ -1,6 +1,6 @@
 @props(['label', 'name'])
 
-<div class="w-full">
+<div {{ $attributes->merge(['class' => 'w-full']) }}>
     @if ($label)
         <x-forms.label :$name :$label />
     @endif

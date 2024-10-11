@@ -21,7 +21,7 @@
                         {{ $printer->IP }}
                     </div>
                 @endif
-                <div class="gap-2">
+                <div class="flex gap-2">
                     <div class="space-y-2 mt-3 w-1/2">
                         <div class="px-1 py-2 bg-[#090909] rounded-md"> Локация:
                             {{ $printer->location }}

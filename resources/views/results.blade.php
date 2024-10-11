@@ -4,7 +4,7 @@
     <div class="flex flex-col space-y-10 mt-6">
         @if ($printers->isNotEmpty())
             @foreach ($printers as $printer)
-                <x-printer-card-wide :$printer />
+                <x-printer-card-tall :$printer />
             @endforeach
         @else
             <x-placeholder>

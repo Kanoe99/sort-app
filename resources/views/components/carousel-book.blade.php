@@ -10,7 +10,7 @@
     @else
         <div class="slider">
             @foreach ($printers as $printer)
-                <x-printer-card-wide :$printer class="item" style="transition: 0.5s" />
+                <x-printer-card-tall :$printer class="item" style="transition: 0.5s" />
             @endforeach
             <div class="absolute w-40 flex">
                 <div class="hover:bg-white/10 transition duration-300 cursor-pointer py-2 h-full w-16 rounded-md flex justify-center items-center group"

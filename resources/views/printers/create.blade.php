@@ -10,7 +10,9 @@
         <x-forms.input label="Статус" placeholder="В эксплуатации" name="status" type="text" />
         <x-forms.input label="Комментарий" placeholder="Вот об этом принтере можно сказать, что.." name="comment"
             type="text" />
-        <x-forms.select name="ip_exists" label="Есть IP?" id="ip-select" class="w-full">
+
+        <x-ip-address />
+        {{-- <x-forms.select name="ip_exists" label="Есть IP?" id="ip-select" class="w-full">
             <option value="yes">Есть</option>
             <option value="no">Нету</option>
         </x-forms.select>
@@ -19,8 +21,8 @@
                 <span class="w-2 h-2 bg-white inline-block"></span>
                 <label class="font-bold" for="ip" id="ip-label">IP адрес</label>
             </div>
-            <x-forms.input label="" placeholder="255.10.192.12" name="IP" id="ip" />
-        </div>
+            <x-forms.input label="" placeholder="255.10.192.12" name="IP" id="ip" maxlength="10" />
+        </div> --}}
 
         <div class="flex justify-between items-center gap-5">
             <x-forms.input label="Счётчик страниц" placeholder="1000" name="counter" type="text" />

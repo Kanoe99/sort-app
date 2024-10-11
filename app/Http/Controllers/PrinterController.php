@@ -49,7 +49,6 @@ class PrinterController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
         $attributes = $request->validate([
             'type' => ['required', 'string', 'max:255'],
             'counter' => ['required', 'string', 'max:255'],
@@ -72,36 +71,42 @@ class PrinterController extends Controller
             'fixDate.required' => 'Укажите дату последнего ремонта.',
             'logo.*.mimes' => 'Только PNG, JPG или JPEG!',
         ]);
-        // Set attention based on checkbox
+
         $attributes['attention'] = $request->has('attention') ? 1 : 0;
 
-        // Convert string dates to Carbon instances
         if ($request->filled('fixDate')) {
             $attributes['fixDate'] = Carbon::createFromFormat('Y-m-d', $request->input('fixDate'));
         }
         $attributes['counterDate'] = Carbon::now()->format('Y-m-d');
-
         if ($request->ip_exists === 'yes') {
-            $attributes['IP'] = $request->validate([
-                'IP' => ['required']
+            $ip = $request->input('IP');
+
+            $ipValidationRules = ['required', 'unique:printers,IP'];
+
+            if (strpos($ip, '.') !== false) {
+                $ipValidationRules[] = 'ip:4';
+            } elseif (strpos($ip, ':') !== false) {
+                $ipValidationRules[] = 'ip:6';
+            }
+
+            $validatedData = $request->validate([
+                'IP' => $ipValidationRules
             ], [
-                'IP.required' => 'Введите IP!'
+                'IP.unique' => 'Такой IP уже существует!',
+                'IP.required' => 'Введите IP!',
+                'IP.ip' => 'Введите корректный IP-адрес!'
             ]);
+            $attributes['IP'] = $validatedData['IP'];
         }
 
-        // $attributes[''] = ;
-
-        // Handle file uploads
         if ($request->file('logo')) {
-            $folderName = $request->IP; // Use the IP address as folder name
+            $folderName = $request->IP;
             $logoPaths = [];
 
-            // Ensure the directory exists
             if (!Storage::disk('public')->exists("logos/{$folderName}")) {
                 Storage::disk('public')->makeDirectory("logos/{$folderName}");
             }
 
-            // Store each logo file
             foreach ($request->file('logo') as $file) {
                 try {
                     $logoPaths[] = $file->store("logos/{$folderName}", 'public');
@@ -110,23 +115,26 @@ class PrinterController extends Controller
                 }
             }
 
-            // Store the paths in JSON format
             $attributes['logo'] = json_encode($logoPaths);
         }
 
-        // Create the printer record
         $printer = Auth::user()->printers()->create(Arr::except($attributes, 'tags'));
 
-        // Handle tags if provided
         if ($attributes['tags'] ?? false) {
-            foreach (explode(',', $attributes['tags']) as $tag) {
-                $printer->tag($tag);
+            // Use an array to store unique tags
+            $tags = array_unique(array_map('trim', explode(',', $attributes['tags'])));
+
+            foreach ($tags as $tag) {
+                // Check if the tag already exists before tagging
+                if (!empty($tag) && !$printer->tags()->where('name', $tag)->exists()) {
+                    $printer->tag($tag);
+                }
             }
         }
 
-        // Redirect with success message
-        return redirect('/')->with('success', 'Принтер успешно добавлен!');
+        return redirect('/');
     }
+
 
     public function edit(Printer $printer)
     {
@@ -138,6 +146,8 @@ class PrinterController extends Controller
     public function update(Request $request, Printer $printer)
     {
         $attributes = $request->validate([
+            'type' => ['required', 'string', 'max:255'],
+            'counter' => ['required', 'string', 'max:255'],
             'model' => ['required', 'string', 'max:255'],
             'location' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
@@ -146,6 +156,8 @@ class PrinterController extends Controller
             'attention' => ['nullable'],
             'logo.*' => ['nullable', 'mimes:jpg,jpeg,png'],
         ], [
+            'type.required' => 'Укажите модель принтера.',
+            'counter.required' => 'Укажите номер счетчика.',
             'model.required' => 'Укажите модель принтера.',
             'location.required' => 'Укажите локацию принтера.',
             'status.required' => 'Укажите статус принтера.',
@@ -161,31 +173,32 @@ class PrinterController extends Controller
                 'IP.unique' => 'Данный IP адрес уже занят.',
                 'IP.ip' => 'IP адрес должен быть верным.',
             ]);
-            $attributes['IP'] = $request->IP; // Store IP if it exists
+            $attributes['IP'] = $request->IP;
         } else {
-            // If IP does not exist and there was an IP before, clear the IP field
+            // Set IP to null if it was previously set and now it is not
             if ($printer->IP) {
-                $attributes['IP'] = null; // Remove IP address
+                $attributes['IP'] = null;
             }
         }
 
-        // Handling the attention checkbox
         $attributes['attention'] = $request->has('attention') ? 1 : 0;
 
-        // Validate number if it has changed
-        if ($printer->number != $request->number) {
-            $attributes = $request->validate(
-                [
-                    'number' => ['required', 'unique:printers,number', 'numeric', 'min:1', 'max:16777215'],
-                ],
-                [
-                    'number.required' => 'Укажите номер принтера.',
-                    'number.unique' => 'Инвентарный номер ' . $request->number . ' уже существует!',
-                ]
-            );
+        if ($printer->counter != $request->counter) {
+            $attributes['counterDate'] = Carbon::now()->format('Y-m-d');
         }
 
-        // Handle logos
+        // Validate number only if it has changed
+        if ($printer->number != $request->number) {
+            $request->validate([
+                'number' => ['required', 'unique:printers,number', 'numeric', 'min:1', 'max:16777215'],
+            ], [
+                'number.required' => 'Укажите номер принтера.',
+                'number.unique' => 'Инвентарный номер ' . $request->number . ' уже существует!',
+            ]);
+            $attributes['number'] = $request->number; // Update the number in the attributes array
+        }
+
+        // Handle logo uploads
         $existingLogos = json_decode($printer->logo, true) ?? [];
         $logoPaths = $existingLogos;
 
@@ -196,19 +209,49 @@ class PrinterController extends Controller
 
         if ($request->file('logo')) {
             $folderName = $request->IP;
-
             foreach ($request->file('logo') as $file) {
                 $logoPaths[] = $file->store("logos/{$folderName}", 'public');
             }
         }
 
         $attributes['logo'] = json_encode($logoPaths);
-
-        // Update the printer record
         $printer->update(Arr::except($attributes, 'tags'));
+
+        if ($attributes['tags'] ?? false) {
+            // Get the current tags associated with the printer
+            $currentTags = $printer->tags()->pluck('name')->toArray();
+
+            // Split and trim the incoming tags from the request
+            $newTags = array_unique(array_map('trim', explode(',', $attributes['tags'])));
+
+            // Find tags to add (new tags)
+            $tagsToAdd = array_diff($newTags, $currentTags);
+
+            foreach ($tagsToAdd as $tag) {
+                if (!empty($tag)) {
+                    // Check if the tag already exists in the database
+                    $tagModel = Tag::firstOrCreate(['name' => $tag]);
+                    $printer->tags()->attach($tagModel->id); // Attach using tag ID
+                }
+            }
+
+            // Find tags to remove (existing tags not in the new list)
+            $tagsToRemove = array_diff($currentTags, $newTags);
+
+            foreach ($tagsToRemove as $tag) {
+                // Get the tag ID before detaching
+                $tagToRemove = Tag::where('name', $tag)->first();
+                if ($tagToRemove) {
+                    $printer->tags()->detach($tagToRemove->id); // Detach the tag
+                }
+            }
+        }
+
 
         return redirect('/');
     }
+
+
 
 
     public function destroy(Printer $printer)
