@@ -36,7 +36,7 @@
         </div>
         <div class="px-1 py-2 bg-[#090909] rounded-md">
             Статус:
-            {{ $printer->location }}
+            {{ $printer->status }}
         </div>
     </a>
 </x-panel>
