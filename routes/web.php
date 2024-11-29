@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [PrinterController::class, 'index']);
 
+
     //prevent manual accesing non get routes
 
     Route::get('/printers/create', [PrinterController::class, 'create']);
