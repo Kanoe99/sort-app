@@ -9,7 +9,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                "black": "#060606"
+                "black": "#070707"
             },
             fontFamily: {
                 "hanken-grotesk": ["Hanken Grotesk", "sans-serif"]
